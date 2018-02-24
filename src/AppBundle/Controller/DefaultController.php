@@ -63,7 +63,7 @@ class DefaultController extends FOSRestController
      * @param string $id
      * @return JsonResponse
      */
-    public function updateProduct(ParamFetcher $paramFetcher, $id)
+    public function updateProduct(ParamFetcher $paramFetcher, $id) : JsonResponse
     {
         try {
             $updateProductCommand = new UpdateProductCommand(
@@ -91,7 +91,7 @@ class DefaultController extends FOSRestController
      * @param ParamFetcher $paramFetcher
      * @return JsonResponse
      */
-    public function addProduct(ParamFetcher $paramFetcher)
+    public function addProduct(ParamFetcher $paramFetcher) : JsonResponse
     {
         try {
             $createProductCommand = new CreateProductCommand(
