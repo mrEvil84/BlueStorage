@@ -31,10 +31,12 @@
         "symfony/swiftmailer-bundle": "^2.6.4",
         "symfony/symfony": "3.4.*",
         "twig/twig": "^1.0||^2.0",
-        "blue/myStorageBundle": "1.0.0"
+        "blue/StorageBundle": "1.0.0",
+        "friendsofsymfony/rest-bundle": "^2.3",
+        "nelmio/cors-bundle": "^1.5"
     },
     "repositories": [
-        {"type" : "git", "url" : "https://github.com/mrEvil84/BlueMyStorageBundle"}
+        {"type" : "git", "url" : "https://github.com/mrEvil84/BlueStorageBundle"}
     ],
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
