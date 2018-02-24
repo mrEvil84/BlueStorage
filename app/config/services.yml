@@ -29,6 +29,10 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+#    product_service\:
+#        resource: '../../../vendor/blue/StorageBundle/Blue/StorageBundle/Service/ProductService'
+#        arguments: ["@doctrine.orm.entity_manager"]
+
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
     #     arguments:

@@ -5,9 +5,11 @@ declare(strict_types =1);
 namespace AppBundle\Controller;
 
 use Blue\StorageBundle\Command\CreateProductCommand;
+use Blue\StorageBundle\Command\DeleteProductCommand;
 use Blue\StorageBundle\Command\UpdateProductCommand;
 use Blue\StorageBundle\Entity\Product;
 use Blue\StorageBundle\Exceptions\AddProductException;
+use Blue\StorageBundle\Exceptions\DeleteProductException;
 use Blue\StorageBundle\Exceptions\UpdateProductException;
 use Blue\StorageBundle\Query\ProductQueryFactory;
 use Blue\StorageBundle\Service\ProductService;
@@ -23,21 +25,21 @@ class DefaultController extends FOSRestController
 {
     /**
      * @Rest\Get("/product"),
-     * @Rest\QueryParam(name="page", requirements="\d+", default="0", description="Results page")
-     * @Rest\QueryParam(name="perPage", requirements="\d+", default="10", description="Results page")
+     * @Rest\QueryParam(name="page", requirements="\d+", default=0, description="Results page")
+     * @Rest\QueryParam(name="perPage", requirements="\d+", default=10, description="Results page")
      * @Rest\QueryParam(name="search", requirements="(existing|non_existing|min_amount)", allowBlank=false, default="existing", description="Search for existing or non existing products")
      * @Rest\QueryParam(name="order", requirements="(asc|desc)", allowBlank=false, default="desc", description="Sort order")
      * @param ParamFetcher $paramFetcher
      * @return JsonResponse
      */
-    public function getProduct(ParamFetcher $paramFetcher): JsonResponse
+    public function getProduct(ParamFetcher $paramFetcher) : JsonResponse
     {
         try {
             $productQuery = ProductQueryFactory::getProductQuery(
                 $paramFetcher->get('search'),
                 $paramFetcher->get('order'),
-                $paramFetcher->get('page'),
-                $paramFetcher->get('perPage')
+                (int)$paramFetcher->get('page'),
+                (int)$paramFetcher->get('perPage')
             );
 
             $productService = $this->getProductService();
@@ -61,7 +63,7 @@ class DefaultController extends FOSRestController
      * @param string $id
      * @return JsonResponse
      */
-    public function updateProduct(ParamFetcher $paramFetcher, $id) : JsonResponse
+    public function updateProduct(ParamFetcher $paramFetcher, $id)
     {
         try {
             $updateProductCommand = new UpdateProductCommand(
@@ -89,7 +91,7 @@ class DefaultController extends FOSRestController
      * @param ParamFetcher $paramFetcher
      * @return JsonResponse
      */
-    public function addProduct(ParamFetcher $paramFetcher) : JsonResponse
+    public function addProduct(ParamFetcher $paramFetcher)
     {
         try {
             $createProductCommand = new CreateProductCommand(
@@ -102,6 +104,34 @@ class DefaultController extends FOSRestController
 
             return $this->json('added');
         } catch (AddProductException $exception) {
+            return $this->json($exception->getMessage(), 400);
+        } catch (\Throwable $exception) {
+            return $this->json($exception->getMessage(), 400);
+        } catch (FatalThrowableError $exception) {
+            return $this->json($exception->getMessage(), 400);
+        }
+    }
+
+    /**
+     * @Rest\Delete("/product/{id}")
+     * @param string $id
+     * @return JsonResponse
+     * @internal param ParamFetcher $paramFetcher
+     */
+    public function deleteProduct($id) : JsonResponse
+    {
+        try {
+            $deleteProductCommand = new DeleteProductCommand(
+                (int)$id,
+                Product::NULL_NAME,
+                Product::NULL_AMOUNT
+            );
+
+            $productService = $this->getProductService();
+            $productService->deleteProduct($deleteProductCommand);
+
+            return $this->json('deleted');
+        } catch (DeleteProductException $exception) {
             return $this->json($exception->getMessage(), 400);
         } catch (\Throwable $exception) {
             return $this->json($exception->getMessage(), 400);
