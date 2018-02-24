@@ -17,3 +17,15 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+
+parameters:
+    database_host: 127.0.0.1
+    database_port: 3306
+    database_name: store
+    database_user: homestead
+    database_password: secret
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: 3342025784e6eeeedd18c9e77ea8a4e4586d07c5
