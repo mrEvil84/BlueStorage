@@ -44,7 +44,7 @@ class DefaultController extends FOSRestController
             );
 
             $productService = $this->getProductService();
-            $products = $productService->getProducts($productQuery);
+            $products = $productService->getProduct($productQuery);
 
             return $this->json($products);
         } catch (ServiceCircularReferenceException $exception) {
