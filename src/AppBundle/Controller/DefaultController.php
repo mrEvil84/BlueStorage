@@ -28,7 +28,7 @@ class DefaultController extends FOSRestController
      * @Rest\QueryParam(name="page", requirements="\d+", default=0, description="Results page")
      * @Rest\QueryParam(name="perPage", requirements="\d+", default=10, description="Results page")
      * @Rest\QueryParam(name="search", requirements="(existing|non_existing|min_amount)", allowBlank=false, default="existing", description="Search for existing or non existing products")
-     * @Rest\QueryParam(name="order", requirements="(asc|desc)", allowBlank=false, default="desc", description="Sort order")
+     * @Rest\QueryParam(name="order", requirements="(ASC|DESC)", default="DESC", description="Sort order")
      * @param ParamFetcher $paramFetcher
      * @return JsonResponse
      */
