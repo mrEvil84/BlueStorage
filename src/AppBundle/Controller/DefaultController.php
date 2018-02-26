@@ -97,7 +97,7 @@ class DefaultController extends FOSRestController
             $createProductCommand = new CreateProductCommand(
                 Product::NULL_ID,
                 $paramFetcher->get('name'),
-                $paramFetcher->get('amount')
+                (int)$paramFetcher->get('amount')
             );
             $productService = $this->getProductService();
             $productService->addProduct($createProductCommand);
