@@ -93,8 +93,8 @@ class DefaultController extends FOSRestController
         try {
             $updateProductCommand = new UpdateProductCommand(
                 (int)$id,
-                $paramFetcher->get('name'),
-                $paramFetcher->get('amount')
+                (string)$paramFetcher->get('name'),
+                (int)$paramFetcher->get('amount')
             );
             $productService = $this->getProductService();
             $productService->updateProduct($updateProductCommand);

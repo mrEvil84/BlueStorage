@@ -8,12 +8,18 @@
     "packages": [
         {
             "name": "blue/StorageBundle",
-            "version": "1.0.3",
+            "version": "1.0.5",
             "target-dir": "Blue/StorageBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mrEvil84/BlueStorageBundle",
-                "reference": "591634be5d7c8e0efb6b1995189bcab176a4ea6c"
+                "reference": "03b490b014b41f76250152b2dfca9d74e7478458"
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -39,7 +45,7 @@
             "keywords": [
                 "storage bundle product storage"
             ],
-            "time": "2018-02-24T19:45:22+00:00"
+            "time": "2018-02-26T11:41:34+00:00"
         },
         {
             "name": "composer/ca-bundle",
