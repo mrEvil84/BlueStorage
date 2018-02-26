@@ -11,6 +11,7 @@ use Blue\StorageBundle\Entity\Product;
 use Blue\StorageBundle\Exceptions\AddProductException;
 use Blue\StorageBundle\Exceptions\DeleteProductException;
 use Blue\StorageBundle\Exceptions\UpdateProductException;
+use Blue\StorageBundle\Query\GetProductByIdQuery;
 use Blue\StorageBundle\Query\ProductQueryFactory;
 use Blue\StorageBundle\Service\ProductService;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -32,7 +33,7 @@ class DefaultController extends FOSRestController
      * @param ParamFetcher $paramFetcher
      * @return JsonResponse
      */
-    public function getProduct(ParamFetcher $paramFetcher) : JsonResponse
+    public function getProducts(ParamFetcher $paramFetcher) : JsonResponse
     {
         try {
             $productQuery = ProductQueryFactory::getProductQuery(
@@ -43,9 +44,33 @@ class DefaultController extends FOSRestController
             );
 
             $productService = $this->getProductService();
-            $products = $productService->getProduct($productQuery);
+            $products = $productService->getProducts($productQuery);
 
             return $this->json($products);
+        } catch (ServiceCircularReferenceException $exception) {
+            return $this->json($exception->getMessage(), 400);
+        } catch (\Throwable $exception) {
+            return $this->json($exception->getMessage(), 400);
+        } catch (FatalThrowableError $exception) {
+            return $this->json($exception->getMessage(), 400);
+        }
+    }
+
+    /**
+     * @Rest\Get("/product/{id}"),
+     * @Rest\QueryParam(name="id", requirements="\d+", default=0, description="Results page")
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function getProduct(int $id = 0) : JsonResponse
+    {
+        try {
+            $productQuery = new GetProductByIdQuery($id);
+
+            $productService = $this->getProductService();
+            $product = $productService->getProduct($productQuery);
+
+            return $this->json($product);
         } catch (ServiceCircularReferenceException $exception) {
             return $this->json($exception->getMessage(), 400);
         } catch (\Throwable $exception) {
